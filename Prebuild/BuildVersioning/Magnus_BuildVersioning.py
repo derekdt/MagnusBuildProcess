@@ -38,8 +38,10 @@ if __name__ == "__main__":
 
     buildIDRegexSearch = re.search("(\d+)\.(\d+)\.(\d+)-(\d+)",oldProjectVersion)
 
-    if buildIDRegexSearch:
-        newBuildVersionStr = str(int(commonConfigParser['ProjectInfo']['BuildVersionID']))
+    if buildIDRegexSearch:    
+        newBuildVersionStr = str(int(commonConfigParser['ProjectInfo']['BuildVersionID']) + 1)
+
+        commonConfigParser['ProjectInfo']['BuildVersionID'] = newBuildVersionStr
 
         newProjectVersion = "%s.%s.%s-%s" % (buildIDRegexSearch.group(1),buildIDRegexSearch.group(2),buildIDRegexSearch.group(3),newBuildVersionStr)
 
@@ -49,8 +51,6 @@ if __name__ == "__main__":
         
         buildConfigParser['/Script/EngineSettings.GeneralProjectSettings']['ProjectVersion'] = newProjectVersion
 
-        commonConfigParser['ProjectInfo']['BuildVersionID'] = str(int(newBuildVersionStr) + 1)
-        
         # Save back the versioning config file in project directory
         with open(finalVersioningConfigPath, 'w+') as configFile:
             buildConfigParser.write(configFile)
