@@ -4,7 +4,7 @@ import configparser
 import sys
 import re
 import subprocess
-
+ 
 def RetrieveLongCommitHash(ProjectRepoPath):
  
     # Construct the command to retrieve the commit hash
@@ -29,7 +29,14 @@ def RetrieveLongCommitHash(ProjectRepoPath):
     shellCommandOutputString = shellCommandOutputString.replace("\n","")
     
     return shellCommandOutputString
+ 
+
+def RetrieveCurrentSteamVersion(CompleteFilePath):
     
+    
+def UpdateSteamVersion(NewSteamVersionString):
+    
+
 if __name__ == "__main__":
     print("Running BuildVersioning\n")
 
