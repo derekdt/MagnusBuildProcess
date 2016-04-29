@@ -4,7 +4,8 @@ import configparser
 import sys
 import re
 import subprocess
- 
+import SteamConfigParser
+
 def RetrieveLongCommitHash(ProjectRepoPath):
  
     # Construct the command to retrieve the commit hash
@@ -29,13 +30,6 @@ def RetrieveLongCommitHash(ProjectRepoPath):
     shellCommandOutputString = shellCommandOutputString.replace("\n","")
     
     return shellCommandOutputString
- 
-
-def RetrieveCurrentSteamVersion(CompleteFilePath):
-    
-    
-def UpdateSteamVersion(NewSteamVersionString):
-    
 
 if __name__ == "__main__":
     print("Running BuildVersioning\n")
@@ -50,7 +44,6 @@ if __name__ == "__main__":
     
     # buildConfigParser and steamConfigParser are used to read and edit the individual versiong strings in the config file
     buildConfigParser = configparser.ConfigParser()
-    steamConfigParser = configparser.ConfigParser()
     
     commonConfigParser.read(commonConfigFilePath)
     versioningConfigParser.read(versioningConfigFilePath)
@@ -69,13 +62,12 @@ if __name__ == "__main__":
     print("Full Steam Version Config Path: " + finalSteamVersioningConfigPath + "\n")
     
     buildConfigParser.read(finalVersioningConfigPath)
-    steamConfigParser.read(finalSteamVersioningConfigPath)
     
     # Grab the Project Version from the Build Config file
 
     oldProjectVersionString = buildConfigParser['/Script/EngineSettings.GeneralProjectSettings']['ProjectVersion']
-    oldSteamVersionString = steamConfigParser['OnlineSubsystemSteam']['GameVersion']
-    
+    oldSteamVersionString = SteamConfigParser.RetrieveCurrentSteamVersion(finalSteamVersioningConfigPath,"OnlineSubsystemSteam","GameVersion")
+
     # Extract the current build number(Format: x.x.x-CommitHash)
     buildIDRegexSearch = re.search("(\d+)\.(\d+)\.(\d+)-([a-zA-Z0-9]+)",oldProjectVersionString)
     steamIDRegexSearch = re.search("(\d+)\.(\d+)\.(\d+)-([a-zA-Z0-9]+)",oldSteamVersionString)
@@ -83,7 +75,7 @@ if __name__ == "__main__":
     print("\t(-) Old Project Version String: " + oldProjectVersionString)
     print("\t(-) Old Steam Version String: " + oldSteamVersionString)
     
-    if buildIDRegexSearch and steamIDRegexSearch:    
+    if buildIDRegexSearch and steamIDRegexSearch: 
         # Get the commit hash of the HEAD of the repo
         currentLongCommitHash = RetrieveLongCommitHash(commonConfigParser['ProjectInfo']['ProjectRootPath'])
         
@@ -102,16 +94,12 @@ if __name__ == "__main__":
         print()
         
         buildConfigParser['/Script/EngineSettings.GeneralProjectSettings']['ProjectVersion'] = newProjectVersionString
-        steamConfigParser['OnlineSubsystemSteam']['GameVersion'] = newSteamVersionString
+        SteamConfigParser.UpdateSteamVersion(finalSteamVersioningConfigPath,"OnlineSubsystemSteam","GameVersion",newSteamVersionString)
         
         # Save back the versioning config file in project directory
         with open(finalVersioningConfigPath, 'w+') as configFile:
             buildConfigParser.write(configFile)
 
-        # Save back the steam versioning config file in project directory
-        with open(finalSteamVersioningConfigPath, 'w+') as configFile:
-            steamConfigParser.write(configFile)
-            
         # Save back the common config file
         with open(commonConfigFilePath, 'w+') as configFile:
             commonConfigParser.write(configFile)

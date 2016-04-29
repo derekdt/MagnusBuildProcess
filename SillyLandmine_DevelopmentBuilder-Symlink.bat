@@ -39,8 +39,6 @@ call Magnus_SourceRepo_GetLatest.bat
 :: [Required Python Verison: 3.5] After getting the latest revision of the current branch, we need to run the pre-build events
 call python Prebuild\Magnus_PrebuildEvents.py
 
-goto end
-
 :: Push the current working directory onto the stack so that we can retrieve information about the revision
 pushd %LocalRepoPath%
 
@@ -80,6 +78,8 @@ if %ERRORLEVEL% NEQ 0  (
 echo "Successfully built project!"
 
 popd
+
+call python Postbuild\Magnus_PostbuildEvents.py
 
 :: Make sure we have the latest revision of the repo
 cd %P4RepoRootPath%

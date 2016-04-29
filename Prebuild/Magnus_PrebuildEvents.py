@@ -16,7 +16,7 @@ if __name__ == "__main__":
         
         print(("[{0}] " + buildEventKey + " => " + currentBuildEventScript).format(currentPrebuildEventID))
 
-        print("---------------------------------------------------------------\n");
+        print("---------------------------------------------------------------");
         
         # Run the current pre-build script
         scriptProcess = subprocess.Popen(["python", sys.path[0] + "\\" + currentBuildEventScript], shell=True)

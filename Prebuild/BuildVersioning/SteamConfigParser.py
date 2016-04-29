@@ -16,7 +16,6 @@ def RetrieveCurrentSteamVersion(ConfigFilePath,SectionName,OptionName):
         
         if not bReachedSection:
             if currentLine == sectionNameString:
-                print("Found section name line: " + currentLine.strip('\n'))
                 bReachedSection = True
         else:
             optionRegexSearch = re.search(optionRegexString,currentLine)
@@ -24,8 +23,6 @@ def RetrieveCurrentSteamVersion(ConfigFilePath,SectionName,OptionName):
             if optionRegexSearch:
                 optionValueString = optionRegexSearch.group(1)
                 break;
-
-    print "Option Value: ", optionValueString
 
     return optionValueString
 
@@ -46,7 +43,6 @@ def UpdateSteamVersion(ConfigFilePath, SectionName, OptionName, NewSteamVersionS
         if not bReachedSection:
             configFileStream.write(currentLine)
             if strippedLine == sectionNameString:
-                print("Found section!")
                 bReachedSection = True
         else:
             optionRegexSearch = re.search(optionRegexString,strippedLine)
@@ -57,7 +53,3 @@ def UpdateSteamVersion(ConfigFilePath, SectionName, OptionName, NewSteamVersionS
                 configFileStream.write(currentLine)
             else:
                 configFileStream.write(currentLine)
-        
-if __name__ == "__main__":
-    UpdateSteamVersion("DefaultEngine.ini","OnlineSubsystemSteam","GameVersion", "0.5.0-Derek Truong")
-    #RetrieveCurrentSteamVersion("DefaultEngine.ini","OnlineSubsystemSteam","GameVersion")    
