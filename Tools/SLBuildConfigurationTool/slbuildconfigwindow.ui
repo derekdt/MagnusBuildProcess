@@ -18,13 +18,9 @@
     <normaloff>MagnusIcon.ico</normaloff>MagnusIcon.ico</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <layout class="QVBoxLayout" name="mainWidgetContainer">
-      <item>
-       <widget class="QTreeView" name="buildProcessDirTree"/>
-      </item>
-     </layout>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QTreeView" name="buildProcessDirTree"/>
     </item>
    </layout>
   </widget>

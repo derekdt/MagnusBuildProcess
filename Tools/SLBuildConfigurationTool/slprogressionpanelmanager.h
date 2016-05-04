@@ -1,0 +1,9 @@
+#ifndef SLPROGRESSIONPANELMANAGER_H
+#define SLPROGRESSIONPANELMANAGER_H
+
+class SLProgressionPanelManager
+{
+    // IMPLEMENT!!!!!
+};
+
+#endif // SLPROGRESSIONPANELMANAGER_H

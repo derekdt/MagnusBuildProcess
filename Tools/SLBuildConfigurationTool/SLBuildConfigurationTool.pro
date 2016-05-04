@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        slbuildconfigwindow.cpp
+        slbuildconfigwindow.cpp \
+    slprogressionpanelmanager.cpp
 
-HEADERS  += slbuildconfigwindow.h
+HEADERS  += slbuildconfigwindow.h \
+    slprogressionpanelmanager.h
 
 FORMS    += slbuildconfigwindow.ui
