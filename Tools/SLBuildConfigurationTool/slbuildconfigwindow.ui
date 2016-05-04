@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>478</width>
+    <height>343</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,19 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QTreeView" name="buildProcessDirTree"/>
+     <widget class="QFrame" name="mainWidgetFrame">
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QTreeView" name="buildProcessDirTree"/>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -29,7 +41,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
+     <width>478</width>
      <height>21</height>
     </rect>
    </property>

@@ -7,7 +7,7 @@
 #include <QFileSystemModel>
 #include <QTreeWidgetItemIterator>
 #include <QFileInfo>
-#include <QToolButton>
+#include <QPushButton>
 #include <QToolBox>
 #include <QLabel>
 #include <QListWidgetItem>
@@ -17,6 +17,7 @@ SLBuildConfigWindow::SLBuildConfigWindow(QWidget *parent) :
     ui(new Ui::SLBuildConfigWindow)
 {
     ui->setupUi(this);
+    ui->mainWidgetFrame->setLayout(new QHBoxLayout);
 
     QSettings::setDefaultFormat(QSettings::IniFormat);
 
@@ -57,43 +58,53 @@ void SLBuildConfigWindow::SetupConfigurationDirTree()
 void SLBuildConfigWindow::LoadConfigFileInfo(const QString& absoluteConfigFilePath)
 {
     // Only destruct the config panel stack if we select a different config file
-    /*if (absoluteConfigFilePath != m_ActiveConfigFilePath)
+    if (absoluteConfigFilePath != m_ActiveConfigFilePath)
     {
         m_ActiveConfigFilePath = absoluteConfigFilePath;
 
         // Clear out the configDetailsPanel for new file
         ClearDetailPanelStack();
 
-        // Push on the first initial group list panel
-        QListWidget* groupListWidget = new QListWidget;
-
-        m_ConfigDetailStack.push(groupListWidget);
-
         // Load the configDetailPanel with the contents
+        QToolBox* groupPanelToolBox = new QToolBox;
         QSettings configSettings(absoluteConfigFilePath,QSettings::IniFormat);
-
         QStringList groupStrings = configSettings.childGroups();
 
         for (const auto& currentGroup : groupStrings)
         {
-            configSettings.beginReadArray(currentGroup); // Set current group as current group context
+            configSettings.beginReadArray(currentGroup);
             QStringList optionStrings = configSettings.childKeys();
+            QListWidget* optionListWidget = new QListWidget;
+            QVBoxLayout* optionListLayout = new QVBoxLayout;
 
-            for (int i = 0;i < optionStrings.size(); ++i)
+            optionListLayout->setAlignment(Qt::AlignTop);
+            optionListWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+            optionListWidget->setLayout(optionListLayout);
+
+            for (const auto& optionString : optionStrings)
             {
-                QListWidgetItem* newListWidget = new QListWidgetItem;
-                ui->configWidgetList->addItem(newListWidget);
-                ui->configWidgetList->setItemWidget(newListWidget,CreateConfigDetailWidget(optionStrings[i],configSettings.value(optionStrings[i]).toString()));
+                optionListWidget->layout()->addWidget(new QPushButton(optionString));
             }
+
+            groupPanelToolBox->addItem(optionListWidget, currentGroup);
 
             configSettings.endArray();
         }
-    }*/
+
+        ui->mainWidgetFrame->layout()->addWidget(groupPanelToolBox);
+        m_ConfigPanelVector.push_back(groupPanelToolBox);
+    }
 }
 
 void SLBuildConfigWindow::ClearDetailPanelStack()
 {
+    for (auto& currentWidget : m_ConfigPanelVector)
+    {
+        delete currentWidget;
+        currentWidget = nullptr;
+    }
 
+    m_ConfigPanelVector.clear();
 }
 
 // Generates the widget for each option in a config file
@@ -102,23 +113,10 @@ QWidget* SLBuildConfigWindow::CreateConfigDetailWidget(const QString& optionName
     return nullptr;
 }
 
-/*void SLBuildConfigWindow::ClearConfigDetailWidget(QLayout* currentLayout)
+QWidget* SLBuildConfigWindow::CreateDetailPanelWidget(const QStringList& inOptionStrings)
 {
-    while (QLayoutItem* item = ui->configDetailsPanel->takeAt(0))
-    {
-        if (QWidget* widget = item->widget())
-        {
-            delete widget;
-        }
-
-        if (QLayout* innerLayout = item->layout())
-        {
-            ClearConfigDetailWidget(innerLayout);
-        }
-
-        delete item;
-    }
-}*/
+    return nullptr;
+}
 
 void SLBuildConfigWindow::ConfigFileSystemLoaded(const QString &path)
 {
