@@ -16,6 +16,8 @@ public:
     ~SLBuildConfigWindow();
 
 private:
+    void SetupConfigurationDirTree();
+private:
     Ui::SLBuildConfigWindow *ui;
 };
 
