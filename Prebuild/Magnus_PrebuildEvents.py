@@ -9,7 +9,7 @@ if __name__ == "__main__":
     currentPrebuildEventID = 1;
     preBuildEventsConfigParser = configparser.ConfigParser()
     print("Running Prebuild Events!\n")
-    preBuildEventsConfigParser.read(sys.path[0] + "\\" + "BuildEventsConfig.ini")
+    preBuildEventsConfigParser.read(sys.path[0] + os.sep + "BuildEventsConfig.ini")
 
     for buildEventKey in preBuildEventsConfigParser['PrebuildEvents']:
         currentBuildEventScript = preBuildEventsConfigParser['PrebuildEvents'][buildEventKey]
@@ -19,7 +19,7 @@ if __name__ == "__main__":
         print("---------------------------------------------------------------");
         
         # Run the current pre-build script
-        scriptProcess = subprocess.Popen(["python", sys.path[0] + "\\" + currentBuildEventScript], shell=True)
+        scriptProcess = subprocess.Popen(["python", sys.path[0] + os.sep + currentBuildEventScript], shell=True)
 
         # Wait for completion
         scriptProcess.communicate()

@@ -7,29 +7,26 @@ set LocalRepoPath="C:\Users\SillyLandmine\Desktop\Dev_Repo\DR2015\NubbleSpacePro
 :: Push the current directory path onto a stack and change the current directory path to %LocalRepoPath%
 pushd %LocalRepoPath%
 
-echo Fetching Latest from origin!
-
 git fetch origin
 
 if %ERRORLEVEL% NEQ 0 ( 
-	echo [UNSUCCESSFUL] - Error %ERRORLEVEL% during git fetch origin command
+	echo ---------[UNSUCCESSFUL] Error %ERRORLEVEL% during git fetch origin command
 	goto :Finish
 ) else (
-	echo Fetch successful!
+	echo ---------[SUCCESS] Fetching latest from origin successful!
 )
 
-echo Removing Local Changes from Config
 git checkout Config\
 
-echo Pulling Latest
+echo ---------[SUCCESS] Removing local changes from Config
 
 git pull
 
 if %ERRORLEVEL% NEQ 0 ( 
-	echo [UNSUCCESSFUL] - Error %ERRORLEVEL% during git pull command
+	echo ---------[UNSUCCESSFUL] Error %ERRORLEVEL% during git pull command
 	goto :Finish
 ) else (
-	echo Pull Successful!
+	echo ---------[SUCCESS] Pulled latest revision successful!
 )
 
 :Finish

@@ -1,10 +1,10 @@
 import configparser
 import sys
 import subprocess
+import os
 
 if __name__ == "__main__":
-    #commonConfigFilePath = sys.path[0] + "\\" + "..\CommonConfig.ini"
-    commonConfigFilePath = sys.path[0] + "\..\\CommonConfig.ini"
+    commonConfigFilePath = sys.path[0] + os.sep + ".." + os.sep + "CommonConfig.ini"
     commonConfigParser = configparser.ConfigParser()
     
     print("Common Config Path:",commonConfigFilePath)
@@ -40,13 +40,3 @@ if __name__ == "__main__":
     shellCommandOutputString = shellCommandOutput.decode("utf-8")
     
     print(shellCommandOutputString)
-    #scriptProcess = subprocess.Popen(["python", sys.path[0] + "\\" + currentBuildEventScript], shell=True)
-    
-    
-    
-    #shellCommandProcess = subprocess.Popen(finalShellCommand,stdout=subprocess.PIPE,shell=True)
- 
- 
- 
-    #for currentLine in iter(shellCommandProcess.stdout.readline, b''):
-    #    print(currentLine.decode("utf-8"))

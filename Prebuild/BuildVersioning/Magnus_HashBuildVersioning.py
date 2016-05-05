@@ -5,6 +5,7 @@ import sys
 import re
 import subprocess
 import SteamConfigParser
+import os
 
 def RetrieveLongCommitHash(ProjectRepoPath):
  
@@ -35,8 +36,8 @@ if __name__ == "__main__":
     print("Running BuildVersioning\n")
 
     # sys.path[0] represents the current path that the script is running in
-    commonConfigFilePath = sys.path[0] + "\\" + "..\CommonConfig.ini"
-    versioningConfigFilePath = sys.path[0] + "\BuildVersioningConfig.ini"
+    commonConfigFilePath = sys.path[0] + os.sep + ".." + os.sep + "CommonConfig.ini"
+    versioningConfigFilePath = sys.path[0] + os.sep + "BuildVersioningConfig.ini"
 
     # commonConfigParser and versiosningConfigParser are used to determine the build ID and relative paths of config files in project directory
     commonConfigParser = configparser.ConfigParser()
@@ -55,11 +56,11 @@ if __name__ == "__main__":
     versioningConfigRelativePath = versioningConfigParser['VersioningInfo']['VersionConfigRelativePath']
     steamVersioningConfigRelativePath = versioningConfigParser['VersioningInfo']['SteamVersionConfigRelativePath']
     
-    finalVersioningConfigPath = projectRootPath + '\\' + versioningConfigRelativePath
-    finalSteamVersioningConfigPath = projectRootPath + '\\' + steamVersioningConfigRelativePath
+    finalVersioningConfigPath = projectRootPath + os.sep + versioningConfigRelativePath
+    finalSteamVersioningConfigPath = projectRootPath + os.sep + steamVersioningConfigRelativePath
     
-    print("Full Project Version Config File Path: " + finalVersioningConfigPath + "\n")
-    print("Full Steam Version Config Path: " + finalSteamVersioningConfigPath + "\n")
+    print("Full Project Version Config File Path: " + finalVersioningConfigPath)
+    print("Full Steam Version Config Path: " + finalSteamVersioningConfigPath)
     
     buildConfigParser.read(finalVersioningConfigPath)
     
@@ -72,9 +73,6 @@ if __name__ == "__main__":
     buildIDRegexSearch = re.search("(\d+)\.(\d+)\.(\d+)-([a-zA-Z0-9]+)",oldProjectVersionString)
     steamIDRegexSearch = re.search("(\d+)\.(\d+)\.(\d+)-([a-zA-Z0-9]+)",oldSteamVersionString)
     
-    print("\t(-) Old Project Version String: " + oldProjectVersionString)
-    print("\t(-) Old Steam Version String: " + oldSteamVersionString)
-    
     if buildIDRegexSearch and steamIDRegexSearch: 
         # Get the commit hash of the HEAD of the repo
         currentLongCommitHash = RetrieveLongCommitHash(commonConfigParser['ProjectInfo']['ProjectRootPath'])
@@ -84,13 +82,9 @@ if __name__ == "__main__":
         newProjectVersionString = "%s.%s.%s-%s" % (buildIDRegexSearch.group(1),buildIDRegexSearch.group(2),buildIDRegexSearch.group(3),currentLongCommitHash)
         newSteamVersionString = "%s.%s.%s-%s" % (steamIDRegexSearch.group(1),steamIDRegexSearch.group(2),steamIDRegexSearch.group(3),currentLongCommitHash)
         
-        print("\t(-) Old Project Version: " + buildIDRegexSearch.group(4))
-        print("\t(-) Old Steam Version: " + steamIDRegexSearch.group(4))
-        
         print()
         print("\t(+) New Project Version String: " + newProjectVersionString)
         print("\t(+) New Steam Version String: " + newSteamVersionString)
-        print("\t(+) New Project Version: " + currentLongCommitHash)
         print()
         
         buildConfigParser['/Script/EngineSettings.GeneralProjectSettings']['ProjectVersion'] = newProjectVersionString

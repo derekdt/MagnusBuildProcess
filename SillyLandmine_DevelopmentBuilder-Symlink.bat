@@ -33,8 +33,11 @@ set Timestamp=
 if "%TSHour:~0,1%" == " " set TSHour=0%TSHour:~1,1%
 if "%TSMinutes:~0,1%" == " " set TSMinutes=0%TSMinutes:~1,1%
 
+echo ---------Retrieving Latest Revision--------- 
 :: Before running the Unreal Automation Tool, we need to make sure that we have the latest revision of the git repo
-call Magnus_SourceRepo_GetLatest.bat
+call SillyLandmine_SourceRepo_GetLatest.bat
+
+echo --------------------------------------------
 
 :: [Required Python Verison: 3.5] After getting the latest revision of the current branch, we need to run the pre-build events
 call python Prebuild\Magnus_PrebuildEvents.py

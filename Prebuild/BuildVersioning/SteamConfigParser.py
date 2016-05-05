@@ -49,7 +49,6 @@ def UpdateSteamVersion(ConfigFilePath, SectionName, OptionName, NewSteamVersionS
 
             if optionRegexSearch:
                 currentLine = "%s=%s\n" % (optionRegexSearch.group(1),NewSteamVersionString)
-                print("Updated Version: " + currentLine)
                 configFileStream.write(currentLine)
             else:
                 configFileStream.write(currentLine)
