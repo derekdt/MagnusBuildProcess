@@ -19,11 +19,14 @@ if __name__ == "__main__":
         print("---------------------------------------------------------------");
         
         # Run the current pre-build script
-        scriptProcess = subprocess.Popen(["python", sys.path[0] + os.sep + currentBuildEventScript], shell=True)
+        print("Running: " + sys.path[0] + os.sep + currentBuildEventScript)
+
+        subprocess.check_call("python3 " + sys.path[0] + os.sep + currentBuildEventScript,shell=True)
+        #scriptProcess = subprocess.Popen(["python3", sys.path[0] + os.sep + currentBuildEventScript],shell=True)
 
         # Wait for completion
-        scriptProcess.communicate()
-
+        #scriptProcess.communicate()
+        
         print("Completed " + buildEventKey + " pre-build event!\n")
 
         print("---------------------------------------------------------------\n");
