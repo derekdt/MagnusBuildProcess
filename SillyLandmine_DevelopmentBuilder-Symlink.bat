@@ -19,7 +19,7 @@ set Platform=Win64
 set BuildName=Dev-PC
 
 :: Version Control Information =====================
-set P4RepoPath="C:\Users\SillyLandmine\Perforce\Magnus\gamepipe\AGP2015\ADatingSim"
+set P4RepoPath="C:\Users\SillyLandmine\Perforce\Magnus"
 set P4RepoRootPath="C:\Users\SillyLandmine\Perforce\Magnus"
 set CurrentCommitLongTag=
 set CurrentBranchName=
@@ -87,7 +87,7 @@ call python Postbuild\Magnus_PostbuildEvents.py
 :: Make sure we have the latest revision of the repo
 cd %P4RepoRootPath%
 
-p4 sync
+::p4 sync
 
 :: To archive the Development Build, we need to move the Development Builds to a new folder to push to Perforce repo
 
