@@ -23,6 +23,8 @@ readonly BuildName=Dev-Mac
 readonly P4RepoPath="/Users/SillyLandmine/Desktop/MagnusMacBuilds"
 readonly P4RepoRootPath="/Users/SillyLandmine/Desktop/MagnusMacBuilds"
 
+cd "`dirname "$0"`"
+
 # Before running the Unreal Automation Tool, we need to make sure that we have the latest revision of the git repo
 sh ./SillyLandmine_SourceRepo_GetLatest.sh
 
@@ -50,9 +52,14 @@ pushd $EngineLinkPath > /dev/null
 
 cd $UATPath
 
+pwd
 # Run the Unreal Automation Tool to create a Development Build for only the Client because we can just host Windows versions of the Server
+# 4.10, doesn't allow -ScriptsForProject flag (?)
+sh $AutomationScript BuildCookRun -nocompile -nocompileeditor -nop4 -project=$UProjectPath -cook -stage -clientconfig=$ClientBuildType -pak -prereqs -nodebuginfo -targetplatform=Mac -build -CrashReporter -utf8output
+
 # -ScriptsForProject needed for Mac builds (not sure why if we specify in -project flag?)
-sh $AutomationScript -ScriptsForProject=$UProjectPath BuildCookRun -nocompile -nocompileditor -installed -nop4 -project=$UProjectPath -cook -stage -clientconfig=$ClientBuildType -pak -prereqs -nodebuginfo -targetplatform=Mac -build -CrashReporter -utf8output -compressed
+# 4.11 
+#sh $AutomationScript -ScriptsForProject=$UProjectPath BuildCookRun -nocompile -nocompileditor -installed -nop4 -project=$UProjectPath -cook -stage -clientconfig=$ClientBuildType -pak -prereqs -nodebuginfo -targetplatform=Mac -build -CrashReporter -utf8output
 
 if [ $? -ne 0 ]
 then
@@ -64,6 +71,8 @@ fi
 echo "============[ SUCCESS ] Built the Client Build"
 
 popd > /dev/null
+
+exit 1
 
 # Make sure we have the latest revision of the repo
 cd $P4RepoRootPath
